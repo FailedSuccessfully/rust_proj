@@ -14,7 +14,8 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_systems(Startup, setup)
         .add_systems(FixedUpdate, (
-                move_player,
+                // move_player,
+                move_enemy_random,
             ))
         .run();
 }
@@ -26,7 +27,7 @@ fn setup(
 ){
     commands.spawn(Camera2dBundle::default());
 
-    commands.spawn((Player, Speed{value: 100.0}, MaterialMesh2dBundle{
+    commands.spawn((Enemy, Speed{value: 100.0}, MaterialMesh2dBundle{
         mesh: meshes.add(shape::Circle::new(50.).into()).into(),
         material: materials.add(ColorMaterial::from(Color::PURPLE)),
         transform: Transform::from_translation(Vec3::default()),

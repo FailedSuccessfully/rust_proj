@@ -2834,6 +2834,7 @@ name = "rust_proj"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "fastrand 2.0.1",
 ]
 
 [[package]]
