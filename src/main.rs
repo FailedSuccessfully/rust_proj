@@ -1,6 +1,14 @@
-use bevy::prelude::*;
-use bevy::sprite::{MaterialMesh2dBundle};
+mod components;
+mod systems;
 
+mod prelude {
+    pub use crate::components::*;
+    pub use crate::systems::*;
+    pub use bevy::prelude::*;
+    pub use bevy::sprite::{MaterialMesh2dBundle};
+}
+
+use prelude::*;
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
@@ -18,7 +26,7 @@ fn setup(
 ){
     commands.spawn(Camera2dBundle::default());
 
-    commands.spawn((Player, MaterialMesh2dBundle{
+    commands.spawn((Player, Speed{value: 100.0}, MaterialMesh2dBundle{
         mesh: meshes.add(shape::Circle::new(50.).into()).into(),
         material: materials.add(ColorMaterial::from(Color::PURPLE)),
         transform: Transform::from_translation(Vec3::default()),
@@ -26,34 +34,6 @@ fn setup(
     }));
 }
 
-fn move_player(
-    keyboard_input: Res<Input<KeyCode>>,
-    mut query: Query<&mut Transform, With<Player>>,
-    time: Res<Time>,
-){
-    let mut player_transform = query.single_mut();
-    let mut direction = Vec2::default();
-
-    if keyboard_input.pressed(KeyCode::Left){
-        direction.x -= 1.0;
-    }
-    if keyboard_input.pressed(KeyCode::Right){
-        direction.x += 1.0;
-    }
-
-    if keyboard_input.pressed(KeyCode::Up){
-        direction.y += 1.0;
-    }
-    if keyboard_input.pressed(KeyCode::Down){
-        direction.y -= 1.0;
-    }
-
-
-    let new_player_pos = player_transform.translation + Vec3::from((direction, 0.0)) * 100.0 * time.delta_seconds();
-    player_transform.translation =  new_player_pos;
-}
 
 
 
-#[derive(Component)]
-struct Player;
